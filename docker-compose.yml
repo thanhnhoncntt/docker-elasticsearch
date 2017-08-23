@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+  elasticsearch:
+    image: elasticsearch:5.5.2
+    container_name: elasticsearch_1
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    deploy: 
+      resources:
+        memory: 1g
+    volumes:
+      - ./elasticsearch/data/esdata1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      esnet:
+        ipv4_address: 172.10.12.2
+  elasticsearch2:
+    image: elasticsearch:5.5.2
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch_1"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    deploy: 
+      resources:
+        memory: 1g
+    volumes:
+      - ./elasticsearch/data/esdata2:/usr/share/elasticsearch/data
+    networks:
+      - esnet
+  kibana:
+    image: kibana:5.5.2
+    volumes:
+      - ./kibana/config/:/usr/share/kibana/config
+    ports:
+      - "5601:5601"
+    networks:
+      - esnet
+    depends_on:
+      - elasticsearch
+
+volumes:
+  esdata1:
+    driver: local
+  esdata2:
+    driver: local
+networks:
+  esnet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.10.12.0/24
+
