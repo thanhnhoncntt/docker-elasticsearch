@@ -5,15 +5,6 @@ services:
     image: elasticsearch:5.5.2
     environment:
       - cluster.name=docker-cluster
-
-
-
-
-
-
-
-
-
     volumes:
       - ./elasticsearch/data/esdata1:/usr/share/elasticsearch/data
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
@@ -22,27 +13,6 @@ services:
       - 9300:9300
     networks:
       - esnet
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   kibana:
     image: kibana:5.5.2
     volumes:
@@ -53,7 +23,6 @@ services:
       - esnet
     depends_on:
       - elasticsearch
-
 volumes:
   esdata1:
     driver: local
@@ -62,8 +31,3 @@ volumes:
 networks:
   esnet:
     driver: bridge
-
-
-
-
-
