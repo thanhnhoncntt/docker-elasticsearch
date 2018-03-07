@@ -24,3 +24,7 @@ discovery.type: single-node
 # xpack.ml.enabled: false
 # xpack.graph.enabled: false
 # xpack.watcher.enabled: false
+thread_pool.bulk.queue_size: 10000
+thread_pool.index.queue_size: 10000
+        
+       
