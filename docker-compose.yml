@@ -5,6 +5,7 @@ services:
     image: elasticsearch:5.5.2
     environment:
       - cluster.name=docker-cluster
+      - "ES_JAVA_OPTS=-Xms20480m -Xmx20480m"
     volumes:
       - ./elasticsearch/data/esdata1:/usr/share/elasticsearch/data
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
