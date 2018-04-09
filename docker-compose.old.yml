@@ -9,9 +9,27 @@ services:
       - ./elasticsearch/data/esdata1:/usr/share/elasticsearch/data
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - ./elasticsearch/config/jvm.options:/usr/share/elasticsearch/config/jvm.options
-    network_mode: host
+      - ./elasticsearch/config/log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - esnet
   kibana:
     image: kibana:5.5.2
     volumes:
       - ./kibana/config/:/usr/share/kibana/config
-    network_mode: host
+    ports:
+      - "5601:5601"
+    networks:
+      - esnet
+    depends_on:
+      - elasticsearch
+volumes:
+  esdata1:
+    driver: local
+  esdata2:
+    driver: local
+networks:
+  esnet:
+    driver: bridge
