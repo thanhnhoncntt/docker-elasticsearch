@@ -9,6 +9,10 @@ services:
       - ./elasticsearch/data/esdata1:/usr/share/elasticsearch/data
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - ./elasticsearch/config/jvm.options:/usr/share/elasticsearch/config/jvm.options
+    ulimits:
+      as:
+        hard: 20000000000
+        soft: 20000000000
     network_mode: host
   kibana:
     image: kibana:5.5.2
